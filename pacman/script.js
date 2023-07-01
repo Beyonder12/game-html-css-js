@@ -1,21 +1,26 @@
-
-document.getElementById('login-form').addEventListener('submit', function(event) {
+document.getElementById('login-container').addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent the form from being submitted normally
 
-  var playerName = document.getElementById('username').value;
-  var password = document.getElementById('password').value;
+  const playerName = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
   console.log(playerName, password)
-  const allowedPlayers = ["mila", "al", "fajr"];
+  const allowedPlayers = [
+    {name : "fajri", gender: 1},
+    {name : "mila", gender: 0},
+    {name : "al", gender: 1},
+  ];
 
-  if (allowedPlayers.includes(playerName) && password === 'ifg') {
-    alert("Welcome, Mr. " + playerName);
+
+  if (allowedPlayers.some(al => al.name === playerName) && password === 'ifg') {
+    if(playerName == 'fajri') alert("Welcome, Mr. " + playerName);
+    else alert("Welcome, " + playerName)
     // Hide the form and show the game board
     document.getElementById('login-form').style.display = 'none';
     document.getElementById('game-board').style.display = 'block';
 
     // Start the game
     // Your game code here...
-    var pacman = {
+    const pacman = {
       x: 0,
       y: 0,
       speed: 5,
@@ -23,11 +28,13 @@ document.getElementById('login-form').addEventListener('submit', function(event)
       size: 10
     };
 
-    var gameBoard = document.getElementById('game-board');
-    var dots = Array.from(document.getElementsByClassName('dot')); // get all dot elements
+    const gameBoard = document.getElementById('game-board');
+    const dots = Array.from(document.getElementsByClassName('dot')); // get all dot elements
+    let dotInterval; // declare dotInterval variable
+    let gameOver = false; // game state flag
 
     function createDot() {
-      var dot = document.createElement('div');
+      const dot = document.createElement('div');
       dot.className = 'dot';
       dot.style.left = `${Math.random() * (gameBoard.offsetWidth - 20)}px`; // Random x-position
       dot.style.top = `${Math.random() * (gameBoard.offsetHeight - 20)}px`; // Random y-position
@@ -36,7 +43,11 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     }
 
     function update() {
-      var pacmanElement = document.getElementById('pacman');
+      if (gameOver) {
+        return; // exit the update function if game is over
+      }
+
+      let pacmanElement = document.getElementById('pacman');
 
       if (!pacmanElement) {
         pacmanElement = document.createElement('div');
@@ -79,7 +90,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         if (distance < (pacman.size + dot.offsetWidth) / 2) {
           dot.parentNode.removeChild(dot); // remove the dot from the game-board
           dots.splice(i, 1); // remove the dot from the dots array
-          pacman.size += 5; // increase pacman's size
+          pacman.size += 20; // increase pacman's size
           pacmanElement.style.width = `${pacman.size}px`;  // Update the size of pacman
           pacmanElement.style.height = `${pacman.size}px`; // Update the size of pacman
           break;
@@ -96,13 +107,14 @@ document.getElementById('login-form').addEventListener('submit', function(event)
 
       // check if pacman is larger than the game-board
       if (pacman.size >= gameBoard.offsetWidth || pacman.size >= gameBoard.offsetHeight) {
-        alert('Game over!');
-        pacman.x = 0; // reset pacman's position
-        pacman.y = 0;
-        pacman.size = 20; // reset pacman's size
-        pacmanElement.style.width = `${pacman.size}px`;  // Reset the size of pacman
-        pacmanElement.style.height = `${pacman.size}px`; // Reset the size of pacman
+        gameOver = true; // set game over flag
         clearInterval(dotInterval); // stop generating new dots
+        setTimeout(function() {
+          const playAgain = confirm('Game over! Play again?');
+          if (playAgain) {
+            resetGame();
+          }
+        }, 1000);
       }
     }
 
@@ -113,6 +125,33 @@ document.getElementById('login-form').addEventListener('submit', function(event)
       if(pacman.y > gameBoard.offsetHeight - pacman.size) pacman.y = gameBoard.offsetHeight - pacman.size;
       pacmanElement.style.left = `${pacman.x}px`;
       pacmanElement.style.top = `${pacman.y}px`;
+    }
+
+    function resetGame() {
+      gameOver = false; // reset game state flag
+      pacman.x = 0; // reset pacman's position
+      pacman.y = 0;
+      pacman.size = 20; // reset pacman's size
+      startGame();
+    }
+
+    let gameDuration = 60000; // Game duration in milliseconds, 120000ms = 2 minutes
+    function startGame() {
+      dotInterval = setInterval(createDot, 1000); // Create a new dot every second.
+      setInterval(update, 1000 / 60); // Update the game 60 times per second.
+
+      // Set a timeout to end the game after gameDuration has passed
+      setTimeout(function() {
+        gameOver = true; // set game over flag
+        clearInterval(dotInterval); // stop generating new dots
+        setTimeout(function() {
+          console.log(gameDuration)
+          const playAgain = confirm('Game over in ' + gameDuration/1000 + ' seconds! Time\'s up. Play again?');
+          if (playAgain) {
+            resetGame();
+          }
+        }, 1000);
+      }, gameDuration);
     }
 
     document.addEventListener('keydown', function(e) {
@@ -132,10 +171,8 @@ document.getElementById('login-form').addEventListener('submit', function(event)
       }
     });
 
-    setInterval(update, 1000 / 60); // Update the game 60 times per second.
-    var dotInterval = setInterval(createDot, 1000); // Create a new dot every second.
+    startGame();
   } else {
     alert("Invalid credentials. Only 'fajr, mila, al' can play this game.");
   }
 });
-

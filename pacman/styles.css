@@ -36,16 +36,18 @@ body {
   height: 300px;
   width: 300px;
   margin-top: 50px;
-  background-image: url("blacksky.png");
+  background-color: #FFFFCC;
+  background-image: url("gameboarding.png");
   border-radius: 10%;
-  display: none;  // Initially hide the game-board
+  display: none;
+/*Initially hide the game-board*/
 }
 
 #pacman {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-color: yellow;
+  background-color: #CCCCCC;
   border-radius: 50%; /* make pacman circular */
 }
 
