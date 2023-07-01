@@ -1,12 +1,13 @@
 
 document.getElementById('login-form').addEventListener('submit', function(event) {
-  // event.preventDefault(); // Prevent the form from being submitted normally
+  event.preventDefault(); // Prevent the form from being submitted normally
 
   var playerName = document.getElementById('username').value;
   var password = document.getElementById('password').value;
   console.log(playerName, password)
+  const allowedPlayers = ["mila", "al", "fajr"];
 
-  if (playerName === 'fajri' && password === 'fajrithetechbillionaire') {
+  if (allowedPlayers.includes(playerName) && password === 'ifg') {
     alert("Welcome, Mr. " + playerName);
     // Hide the form and show the game board
     document.getElementById('login-form').style.display = 'none';
@@ -134,7 +135,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     setInterval(update, 1000 / 60); // Update the game 60 times per second.
     var dotInterval = setInterval(createDot, 1000); // Create a new dot every second.
   } else {
-    alert("Invalid credentials. Only 'fajri' can play this game.");
+    alert("Invalid credentials. Only 'fajr, mila, al' can play this game.");
   }
 });
 

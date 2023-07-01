@@ -7,19 +7,23 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <form id="login-form">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br>
-    <input type="submit" value="Start Game">
-  </form>
-  <div id="game-board">
-    <!-- dots -->
-    <div class="dot" style="top: 50px; left: 50px;"></div>
-    <div class="dot" style="top: 100px; left: 100px;"></div>
-    <!-- add more dots as needed -->
+  <div id="login-container">
+    <div id="login-box">
+      <form id="login-form">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Start Game">
+      </form>
+    </div>
   </div>
+
+  <div id="game-container">
+    <div id="game-board">
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

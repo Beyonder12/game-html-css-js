@@ -1,8 +1,44 @@
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: url("galaxy.jpg");
+  background-size: cover;  /* Resize the background image to cover the entire container */
+  background-repeat: no-repeat;  /* Do not repeat the background image */
+}
+
+#login-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+#game-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25vh;
+}
+
+#login-box {
+  width: 300px;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto 50px;
+  border-radius: 5%;
+}
+
 #game-board {
   position: relative;
   height: 300px;
   width: 300px;
-  background-color: blue;
+  margin-top: 50px;
+  background-image: url("blacksky.png");
+  border-radius: 10%;
+  display: none;  // Initially hide the game-board
 }
 
 #pacman {
@@ -17,6 +53,6 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  background-color: black;
+  background-color: whitesmoke;
   border-radius: 50%; /* make dots circular */
 }
