@@ -1,0 +1,22 @@
+#game-board {
+  position: relative;
+  height: 300px;
+  width: 300px;
+  background-color: blue;
+}
+
+#pacman {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: yellow;
+  border-radius: 50%; /* make pacman circular */
+}
+
+.dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: black;
+  border-radius: 50%; /* make dots circular */
+}

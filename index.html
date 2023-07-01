@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Simple JavaScript Game</title>
+        <style>
+            #game-board {
+                position: relative;
+                height: 200px;
+                width: 200px;
+                border: 1px solid black;
+            }
+            .dot {
+                position: absolute;
+                height: 20px;
+                width: 20px;
+                background-color: #f00;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="game-board"></div>
+        
+        <script>
+            var dot = document.createElement('div');
+            dot.className = 'dot';
+            document.getElementById('game-board').appendChild(dot);
+            
+            dot.style.left = '50px';
+            dot.style.top = '50px';
+        
+            window.addEventListener('keydown', function(event) {
+                var x = parseInt(dot.style.left);
+                var y = parseInt(dot.style.top);
+        
+                if(event.key == 'ArrowUp' && y > 10) y -= 10;
+                if(event.key == 'ArrowDown' && y < 180) y += 10;
+                if(event.key == 'ArrowLeft' && x > 10) x -= 10;
+                if(event.key == 'ArrowRight' && x < 180) x += 10;
+        
+                dot.style.left = `${x}px`;
+                dot.style.top = `${y}px`;
+            });
+        </script>
+        
+    </body>
+</html>
+
