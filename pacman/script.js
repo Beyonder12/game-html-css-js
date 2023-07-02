@@ -12,8 +12,9 @@ document.getElementById('login-container').addEventListener('submit', function(e
 
 
   if (allowedPlayers.some(al => al.name === playerName) && password === 'ifg') {
-    if(playerName == 'fajri') alert("Welcome, Mr. " + playerName);
-    else alert("Welcome, " + playerName)
+    const playerGender = allowedPlayers.find(al => al.name === playerName).gender;
+    const title = playerGender === 1 ? "Mr. " : "Ms. ";
+    alert("Welcome, " + title + playerName);
     // Hide the form and show the game board
     document.getElementById('login-form').style.display = 'none';
     document.getElementById('game-board').style.display = 'block';
@@ -25,11 +26,11 @@ document.getElementById('login-container').addEventListener('submit', function(e
       y: 0,
       speed: 5,
       direction: 'right',
-      size: 10
+      size: 20
     };
 
     const gameBoard = document.getElementById('game-board');
-    const dots = Array.from(document.getElementsByClassName('dot')); // get all dot elements
+    let dots = Array.from(document.getElementsByClassName('dot')); // get all dot elements
     let dotInterval; // declare dotInterval variable
     let gameOver = false; // game state flag
 
@@ -42,7 +43,9 @@ document.getElementById('login-container').addEventListener('submit', function(e
       dots.push(dot); // add the new dot to the dots array
     }
 
-    function update() {
+    let frame = 0;
+
+    function update(playerName) {
       if (gameOver) {
         return; // exit the update function if game is over
       }
@@ -52,8 +55,29 @@ document.getElementById('login-container').addEventListener('submit', function(e
       if (!pacmanElement) {
         pacmanElement = document.createElement('div');
         pacmanElement.id = 'pacman';
+
+        if(playerName == "fajri") {
+          pacmanElement.style.backgroundImage = "url('fajri.png')";
+          pacmanElement.style.backgroundSize = "contain";
+          pacmanElement.style.backgroundRepeat = "no-repeat";
+          pacmanElement.style.backgroundPosition = "center";
+        } else if (playerName == "mila") {
+          pacmanElement.style.backgroundImage = "url('mila.png')";
+          pacmanElement.style.backgroundSize = "contain";
+          pacmanElement.style.backgroundRepeat = "no-repeat";
+          pacmanElement.style.backgroundPosition = "center";
+
+        }
+
+        pacmanElement.className = 'pacman-open'; // Add this line
         gameBoard.appendChild(pacmanElement);
       }
+      // determine whether pacman's mouth should be open or closed
+      let mouthClass = frame % 10 < 5 ? 'pacman-open' : 'pacman-closed';
+      // apply the appropriate classes for pacman's state and direction
+      pacmanElement.className = 'pacman ' + mouthClass + ' pacman-' + pacman.direction;
+
+      frame++; // Increment frame count
 
       pacmanElement.style.width = `${pacman.size}px`;
       pacmanElement.style.height = `${pacman.size}px`;
@@ -90,7 +114,7 @@ document.getElementById('login-container').addEventListener('submit', function(e
         if (distance < (pacman.size + dot.offsetWidth) / 2) {
           dot.parentNode.removeChild(dot); // remove the dot from the game-board
           dots.splice(i, 1); // remove the dot from the dots array
-          pacman.size += 20; // increase pacman's size
+          pacman.size += 2; // increase pacman's size
           pacmanElement.style.width = `${pacman.size}px`;  // Update the size of pacman
           pacmanElement.style.height = `${pacman.size}px`; // Update the size of pacman
           break;
@@ -112,9 +136,9 @@ document.getElementById('login-container').addEventListener('submit', function(e
         setTimeout(function() {
           const playAgain = confirm('Game over! Play again?');
           if (playAgain) {
-            resetGame();
+            resetGame(playerName);
           }
-        }, 1000);
+        }, 100);
       }
     }
 
@@ -127,28 +151,31 @@ document.getElementById('login-container').addEventListener('submit', function(e
       pacmanElement.style.top = `${pacman.y}px`;
     }
 
-    function resetGame() {
+    function resetGame(playerName) {
       gameOver = false; // reset game state flag
       pacman.x = 0; // reset pacman's position
       pacman.y = 0;
       pacman.size = 20; // reset pacman's size
-      startGame();
+      dots.forEach((dot) => dot.remove()); // remove all dots from the DOM
+      dots = []; // clear the dots array
+      startGame(playerName);
     }
 
-    let gameDuration = 60000; // Game duration in milliseconds, 120000ms = 2 minutes
-    function startGame() {
+    let gameDuration = 10000;
+    function startGame(playerName) {
       dotInterval = setInterval(createDot, 1000); // Create a new dot every second.
-      setInterval(update, 1000 / 60); // Update the game 60 times per second.
+      let updateInterval = setInterval(() => update(playerName), 1000 / 60); // Update the game 60 times per second.
 
       // Set a timeout to end the game after gameDuration has passed
       setTimeout(function() {
         gameOver = true; // set game over flag
         clearInterval(dotInterval); // stop generating new dots
+        clearInterval(updateInterval)
         setTimeout(function() {
           console.log(gameDuration)
-          const playAgain = confirm('Game over in ' + gameDuration/1000 + ' seconds! Time\'s up. Play again?');
+          const playAgain = confirm('Game over in ' + gameDuration/1000 + ' seconds! Time\'s up. Play again? Your score ' + (pacman.size - 20)/2);
           if (playAgain) {
-            resetGame();
+            resetGame(playerName);
           }
         }, 1000);
       }, gameDuration);
@@ -171,7 +198,7 @@ document.getElementById('login-container').addEventListener('submit', function(e
       }
     });
 
-    startGame();
+    startGame(playerName);
   } else {
     alert("Invalid credentials. Only 'fajr, mila, al' can play this game.");
   }

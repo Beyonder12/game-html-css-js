@@ -36,10 +36,11 @@ body {
   height: 300px;
   width: 300px;
   margin-top: 50px;
-  background-color: #FFFFCC;
+  background-color: black;
   background-image: url("gameboarding.png");
   border-radius: 10%;
   display: none;
+  border: 3px solid black;
 /*Initially hide the game-board*/
 }
 
@@ -47,14 +48,45 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-color: #CCCCCC;
+  background-color: #8d8d1c;
   border-radius: 50%; /* make pacman circular */
+  background-image: url("java.png");
+}
+.pacman-open {
+  background-color: #8d8d1c;
+  border-radius: 50%;
+  clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+  border: 1px solid black;
+}
+
+.pacman-closed {
+  background-color: #8d8d1c;
+  border-radius: 50%;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  border: 1px solid black;
+}
+
+.pacman-right {
+  transform: rotate(0deg);
+}
+
+.pacman-left {
+  transform: rotate(180deg);
+}
+
+.pacman-up {
+  transform: rotate(270deg);
+}
+
+.pacman-down {
+  transform: rotate(90deg);
 }
 
 .dot {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-color: whitesmoke;
+  background-image: url("bug.png");
+  background-size: cover;
   border-radius: 50%; /* make dots circular */
 }
