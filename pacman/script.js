@@ -56,17 +56,27 @@ document.getElementById('login-container').addEventListener('submit', function(e
         pacmanElement = document.createElement('div');
         pacmanElement.id = 'pacman';
 
-        if(playerName == "fajri") {
+        if(playerName === "fajri") {
           pacmanElement.style.backgroundImage = "url('fajri.png')";
           pacmanElement.style.backgroundSize = "contain";
           pacmanElement.style.backgroundRepeat = "no-repeat";
           pacmanElement.style.backgroundPosition = "center";
-        } else if (playerName == "mila") {
+        } else if (playerName === "mila") {
           pacmanElement.style.backgroundImage = "url('mila.png')";
           pacmanElement.style.backgroundSize = "contain";
           pacmanElement.style.backgroundRepeat = "no-repeat";
           pacmanElement.style.backgroundPosition = "center";
 
+        } else if (playerName === "al") {
+          pacmanElement.style.backgroundImage = "url('al.png')";
+          pacmanElement.style.backgroundSize = "contain";
+          pacmanElement.style.backgroundRepeat = "no-repeat";
+          pacmanElement.style.backgroundPosition = "center";
+        } else {
+          pacmanElement.style.backgroundImage = "url('anom.png')";
+          pacmanElement.style.backgroundSize = "contain";
+          pacmanElement.style.backgroundRepeat = "no-repeat";
+          pacmanElement.style.backgroundPosition = "center";
         }
 
         pacmanElement.className = 'pacman-open'; // Add this line
