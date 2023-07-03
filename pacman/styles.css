@@ -33,8 +33,8 @@ body {
 
 #game-board {
   position: relative;
-  height: 800px;
-  width: 800px;
+  height: 500px;
+  width: 500px;
   margin-top: 50px;
   background-color: black;
   background-image: url("gameboard.png");
@@ -90,3 +90,25 @@ body {
   background-size: cover;
   border-radius: 50%; /* make dots circular */
 }
+
+.score-popup {
+  position: absolute;
+  font-size: 200px;
+  color: red;
+  opacity: 1; /* The popup starts visible */
+  animation: score-popup 1s forwards; /* The popup will use an animation */
+}
+
+@keyframes score-popup {
+  0% {
+    opacity: 1; /* The popup is fully opaque */
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(0, -50px); /* Move the popup up by 50 pixels */
+    opacity: 0; /* The popup becomes transparent */
+  }
+}
+

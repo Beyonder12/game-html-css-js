@@ -1,4 +1,4 @@
-document.getElementById('login-container').addEventListener('submit', function(event) {
+document.getElementById('login-form').addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent the form from being submitted normally
 
   const playerName = document.getElementById('username').value;
@@ -12,6 +12,9 @@ document.getElementById('login-container').addEventListener('submit', function(e
 
 
   if (allowedPlayers.some(al => al.name === playerName) && password === 'ifg') {
+
+    // Get the audio element
+    const bgMusic = document.getElementById("bgMusic");
     const playerGender = allowedPlayers.find(al => al.name === playerName).gender;
     const title = playerGender === 1 ? "Mr. " : "Ms. ";
     alert("Welcome, " + title + playerName);
@@ -113,6 +116,8 @@ document.getElementById('login-container').addEventListener('submit', function(e
       }
 
       // check if pacman would hit a dot
+      let rndx;
+      let rndy;
       for (let i = 0; i < dots.length; i++) {
         let dot = dots[i];
         let dotX = dot.offsetLeft + dot.offsetWidth / 2;
@@ -122,6 +127,10 @@ document.getElementById('login-container').addEventListener('submit', function(e
         let distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < (pacman.size + dot.offsetWidth) / 2) {
+          score++; // Increase the score
+          rndx = Math.random() * (gameBoard.offsetWidth - 20)
+          rndy = Math.random() * (gameBoard.offsetHeight/10)
+          createScorePopup(score, rndx, rndy);
           dot.parentNode.removeChild(dot); // remove the dot from the game-board
           dots.splice(i, 1); // remove the dot from the dots array
           pacman.size += 2; // increase pacman's size
@@ -164,26 +173,31 @@ document.getElementById('login-container').addEventListener('submit', function(e
     function resetGame(playerName) {
       // Pause the music
       bgMusic.pause();
+
+      score = 0; // reset the score
+      document.getElementById('score-display').textContent = "Score: " + score;
+
       gameOver = false; // reset game state flag
       pacman.x = 0; // reset pacman's position
       pacman.y = 0;
-      pacman.size = 20; // reset pacman's size
+      pacman.speed+=3;
+      pacman.size += 20; // reset pacman's size
       dots.forEach((dot) => dot.remove()); // remove all dots from the DOM
       dots = []; // clear the dots array
       startGame(playerName);
     }
 
-    let gameDuration = 30000;
-    // Get the audio element
-    var bgMusic = document.getElementById("bgMusic");
-
-// Set the volume (optional)
-    bgMusic.volume = 0.5;
-
-// Play the music
-    bgMusic.play();
+    let gameDuration = 10000;
+    let score = 0;
 
     function startGame(playerName) {
+
+
+      // Set the volume (optional)
+      bgMusic.volume = 0.5;
+
+      // Play the music
+      bgMusic.play();
       dotInterval = setInterval(createDot, 1000); // Create a new dot every second.
       let updateInterval = setInterval(() => update(playerName), 1000 / 60); // Update the game 60 times per second.
 
@@ -193,8 +207,9 @@ document.getElementById('login-container').addEventListener('submit', function(e
         clearInterval(dotInterval); // stop generating new dots
         clearInterval(updateInterval)
         setTimeout(function() {
+          bgMusic.pause();
           console.log(gameDuration)
-          const playAgain = confirm('Game over in ' + gameDuration/1000 + ' seconds! Time\'s up. Play again? Your score ' + (pacman.size - 20)/2);
+          const playAgain = confirm('Game over in ' + gameDuration/1000 + ' seconds! Time\'s up. Play again? Your score :' + score);
           if (playAgain) {
             resetGame(playerName);
           }
@@ -218,6 +233,20 @@ document.getElementById('login-container').addEventListener('submit', function(e
           break;
       }
     });
+    function createScorePopup(score, x, y) {
+      const popup = document.createElement('div');
+      popup.className = 'score-popup';
+      popup.textContent = `+${score}`;
+      popup.style.left = `${x}px`;
+      popup.style.top = `${y}px`;
+      gameBoard.appendChild(popup);
+
+      // Remove the popup after it has faded out
+      setTimeout(() => {
+        gameBoard.removeChild(popup);
+      }, 2000); // This should match the length of the animation
+    }
+
 
     startGame(playerName);
   } else {
