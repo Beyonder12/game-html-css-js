@@ -162,6 +162,8 @@ document.getElementById('login-container').addEventListener('submit', function(e
     }
 
     function resetGame(playerName) {
+      // Pause the music
+      bgMusic.pause();
       gameOver = false; // reset game state flag
       pacman.x = 0; // reset pacman's position
       pacman.y = 0;
@@ -172,6 +174,15 @@ document.getElementById('login-container').addEventListener('submit', function(e
     }
 
     let gameDuration = 30000;
+    // Get the audio element
+    var bgMusic = document.getElementById("bgMusic");
+
+// Set the volume (optional)
+    bgMusic.volume = 0.5;
+
+// Play the music
+    bgMusic.play();
+
     function startGame(playerName) {
       dotInterval = setInterval(createDot, 1000); // Create a new dot every second.
       let updateInterval = setInterval(() => update(playerName), 1000 / 60); // Update the game 60 times per second.
