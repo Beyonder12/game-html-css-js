@@ -26,7 +26,7 @@ document.getElementById('login-container').addEventListener('submit', function(e
       y: 0,
       speed: 5,
       direction: 'right',
-      size: 20
+      size: 80
     };
 
     const gameBoard = document.getElementById('game-board');
@@ -171,7 +171,7 @@ document.getElementById('login-container').addEventListener('submit', function(e
       startGame(playerName);
     }
 
-    let gameDuration = 10000;
+    let gameDuration = 30000;
     function startGame(playerName) {
       dotInterval = setInterval(createDot, 1000); // Create a new dot every second.
       let updateInterval = setInterval(() => update(playerName), 1000 / 60); // Update the game 60 times per second.
